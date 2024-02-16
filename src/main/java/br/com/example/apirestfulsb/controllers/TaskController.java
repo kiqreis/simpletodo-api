@@ -2,6 +2,7 @@ package br.com.example.apirestfulsb.controllers;
 
 import br.com.example.apirestfulsb.models.Task;
 import br.com.example.apirestfulsb.services.TaskService;
+import br.com.example.apirestfulsb.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ public class TaskController {
   @Autowired
   private TaskService taskService;
 
+  @Autowired
+  private UserService userService;
+
   @GetMapping("/{id}")
   public ResponseEntity<Task> findById(@PathVariable(value = "id") Long id) {
     Task task = taskService.findById(id);
@@ -25,6 +29,7 @@ public class TaskController {
 
   @GetMapping("/user/{id}")
   public ResponseEntity<List<Task>> findAllByUserId(@PathVariable(value = "id") Long id) {
+    userService.findById(id);
     return ResponseEntity.status(HttpStatus.OK).body(taskService.findByUserId(id));
   }
 

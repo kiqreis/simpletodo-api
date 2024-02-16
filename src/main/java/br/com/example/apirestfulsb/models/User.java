@@ -1,24 +1,20 @@
 package br.com.example.apirestfulsb.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode(of = "id")
 public class User {
 
   @Id
@@ -29,24 +25,12 @@ public class User {
   private String name;
 
   @NotBlank
-  @Size(min = 8, max =  60)
+  @Size(min = 8, max = 60)
+  @JsonProperty(access = Access.WRITE_ONLY)
   private String password;
 
   @OneToMany(mappedBy = "user")
-  @JsonIgnore
+  @JsonProperty(access = Access.WRITE_ONLY)
   private List<Task> tasks = new ArrayList<>();
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    User user = (User) o;
-    return Objects.equals(id, user.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
-  }
 
 }
