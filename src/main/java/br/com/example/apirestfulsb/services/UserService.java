@@ -16,7 +16,7 @@ public class UserService {
 
   public User findById(Long id) {
     Optional<User> user = userRepository.findById(id);
-    return user.orElseThrow(() -> new RuntimeException("User not found!"));
+    return user.orElseThrow(() -> new ObjectNotFoundException("User not found!"));
   }
 
   @Transactional
@@ -32,10 +32,26 @@ public class UserService {
     return userRepository.save(newUser);
   }
 
+//  public void delete(Long id) {
+//    Optional<User> user = userRepository.findById(id);
+////    if (user != null) {
+////      userRepository.deleteById(id);
+////    } else if (user.getTasks().size() > 0) {
+////      throw new DataBindingViolationException("Failed to save entity with associated data");
+////    }
+//    user.orElseThrow(() -> new DataBindingViolationException("Failed to save entity with associated data"));
+//  }
+
   public void delete(Long id) {
-    User user = findById(id);
-    if (user != null) {
+    Optional<User> user = userRepository.findById(id);
+    if (user.isPresent()) {
+      User userEntity = user.get();
+      if (!userEntity.getTasks().isEmpty()) {
+        throw new DataBindingViolationException("Failed to delete entity with associated data");
+      }
       userRepository.deleteById(id);
+    } else {
+      throw new ObjectNotFoundException("User not found");
     }
   }
 

@@ -13,20 +13,24 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(includeFieldNames = false)
-@EqualsAndHashCode(of = "id")
 public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
   private Long id;
 
+  @Column(nullable = false, unique = true)
   @NotBlank
+  @EqualsAndHashCode.Include
   private String name;
 
-  @NotBlank
-  @Size(min = 8, max = 60)
+  @Column(nullable = false)
   @JsonProperty(access = Access.WRITE_ONLY)
+  @Size(min = 8, max = 60)
+  @NotBlank
   private String password;
 
   @OneToMany(mappedBy = "user")

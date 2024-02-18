@@ -21,7 +21,7 @@ public class TaskService {
 
   public Task findById(Long id) {
     Optional<Task> task = taskRepository.findById(id);
-    return task.orElseThrow(() -> new RuntimeException("Task not found!"));
+    return task.orElseThrow(() -> new ObjectNotFoundException("Task not found!"));
   }
 
   public List<Task> findByUserId(Long userId) {

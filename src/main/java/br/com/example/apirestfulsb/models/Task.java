@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tasks")
 @Data
 @ToString(includeFieldNames = false)
+@EqualsAndHashCode(of = "id")
 public class Task {
 
   @Id
@@ -24,20 +25,8 @@ public class Task {
   private User user;
 
   @NotBlank
+  @Column(nullable = false)
   @Size(min = 1, max = 255)
   private String description;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Task task = (Task) o;
-    return Objects.equals(id, task.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
-  }
 
 }
