@@ -32,16 +32,6 @@ public class UserService {
     return userRepository.save(newUser);
   }
 
-//  public void delete(Long id) {
-//    Optional<User> user = userRepository.findById(id);
-////    if (user != null) {
-////      userRepository.deleteById(id);
-////    } else if (user.getTasks().size() > 0) {
-////      throw new DataBindingViolationException("Failed to save entity with associated data");
-////    }
-//    user.orElseThrow(() -> new DataBindingViolationException("Failed to save entity with associated data"));
-//  }
-
   public void delete(Long id) {
     Optional<User> user = userRepository.findById(id);
     if (user.isPresent()) {
